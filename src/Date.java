@@ -117,6 +117,21 @@ public class Date
 		return (jd-my_jd);
 	}
 	
+	/**
+	 * Verifica se la data su cui è invocato il metodo 
+	 * è successiva alla data passata come parametro
+	 * @param d	data passata come parametro
+	 * @return true se la data su cui è invocato il metodo 
+	 * è successiva a d
+	 */
+	public boolean IsSuccessivaA (Date d)
+	{
+		if (julianDate(this)-julianDate(d)>0)
+			return true;
+		else
+			return false;
+	}
+	
 	public String toString()
 	{
 		return (getDay()+"\\"+getMonth()+"\\"+getYear());
