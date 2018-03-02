@@ -1,4 +1,9 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import fileTxt.*;
@@ -16,6 +21,7 @@ public class Progetto implements Serializable
 		this.denominazione=denominazione;
 		elencoAttivita=new Attivita[MAX_NUMERO_ATTIVITA];
 	}
+	
 	
 	public String getDenominazione()
 	{
@@ -251,6 +257,144 @@ public class Progetto implements Serializable
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub
-	}
+		/*//---------------------------------------------------------------------------------------------------------------	
+		Progetto p1=new Progetto ("Corso informatica");
+		 
+		try 
+		{
+			p1.creaAttivita("Introduzione alla OOP", new Date(15,10,2017));
+			p1.creaAttivita("Linguaggio JAVA", new Date(1,12,2017));
+			p1.creaAttivita("Array in Java", new Date(20,1,2018));
+			p1.creaAttivita("Eccezioni in Java", new Date(28,2,2018));
+			p1.creaAttivita("File di testo in Java", new Date(10,3,2018));
+			p1.creaAttivita("Serializzazione in Java", new Date(20,3,2018));
+		} 
+		catch (MaxNumeroAttivitaRaggiunto e) 
+		{
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
+	
+		try 
+		{
+		//	p1.eliminaAttivita("Array in Java");
+			p1.aggiornaAttivita("Array in Java", new Date(25,3,2018));
+			p1.aggiornaAttivita("Array in Java", 100,new Date(12,2,2018));
+		} 
+		catch (AttivitaNonPresente e)
+		{
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
+		
+		Attivita[] elenco;
+		elenco=p1.elencaAttivita();
+		System.out.println(p1.getDenominazione());
+		for (int i = 0; i < elenco.length; i++) 
+		{
+			System.out.println(elenco[i].toString());
+			System.out.println("-----------------------------");
+		}	
 
+		Attivita[] elencoAttivitaCompletate;
+		elencoAttivitaCompletate=p1.elencaAttivitaCompletate();
+		System.out.println(p1.getDenominazione()+"\nElenco attività completate\n");
+		for (int i = 0; i < elencoAttivitaCompletate.length; i++) 
+		{
+			System.out.println(elencoAttivitaCompletate[i].toString());
+			System.out.println("-----------------------------");
+		}	
+		
+	
+		Attivita[] elencoAttivitaInScadenza;
+		Date dataScadenza=new Date(12,2,2018);
+		elencoAttivitaInScadenza=p1.elencaAttivitaInScadenza(dataScadenza);
+		System.out.println(p1.getDenominazione()+"\nElenco attività in scadenza prima di "+ dataScadenza.toString()+"\nnon ancora completate\n");
+		for (int i = 0; i < elencoAttivitaInScadenza.length; i++) 
+		{
+			System.out.println(elencoAttivitaInScadenza[i].toString());
+			System.out.println("-----------------------------");
+		}	
+		
+		String workingDir = System.getProperty("user.dir"); //directory del progetto corrente
+		try 
+		{
+			p1.esportaAttivitaSuFile(workingDir+"\\stampeProgetti\\"+p1.getDenominazione()+".txt");
+			p1.esportaAttivitaCompletateSuFile(workingDir+"\\stampeProgetti\\"+p1.getDenominazione()+"_completate.txt");
+			Date dataScadenza2=new Date(15,2,2018);
+			p1.esportaAttivitaInScadenzaSuFile(dataScadenza,workingDir+"\\stampeProgetti\\"+p1.getDenominazione()+"_in_Scadenza_"+dataScadenza.getDay()+
+					"_"+dataScadenza.getMonth()+"_"+dataScadenza.getYear()+".txt");
+		} 
+		catch (IOException e) 
+		{
+			System.out.println(e.toString());
+			e.printStackTrace();
+		} 
+		catch (FileException e) 
+		{
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
+
+		
+		FileOutputStream f1;
+		String directoryProgetti = System.getProperty("user.dir")+"\\elencoProgetti\\"; //directory del progetto corrente
+		
+
+		try 
+		{
+			
+			f1 = new FileOutputStream(directoryProgetti+"Corso informatica.bin");
+			ObjectOutputStream outputStream=new ObjectOutputStream(f1);
+			outputStream.writeObject(p1);
+			outputStream.flush();
+			f1.close();			
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		} 
+					
+*///-----------------------------------------------------------------------------------------------------
+		
+		//-----------------------deserializzazione di un progetto   OK funziona--------------------------------
+		Attivita[] elenco;
+		String directoryProgetti = System.getProperty("user.dir")+"\\elencoProgetti\\"; //directory del progetto corrente
+		Progetto p2 = null;
+			try 
+			{
+				FileInputStream f2;
+				f2 = new FileInputStream(directoryProgetti+"Corso informatica.bin");
+				ObjectInputStream streamInput= new ObjectInputStream(f2);
+				p2=(Progetto)streamInput.readObject();
+				f2.close();
+			} 
+			catch (FileNotFoundException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			catch (IOException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			catch (ClassNotFoundException e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+			elenco=p2.elencaAttivita();
+			System.out.println(p2.getDenominazione());
+			for (int i = 0; i < elenco.length; i++) 
+			{
+				System.out.println(elenco[i].toString());
+				System.out.println("-----------------------------");
+			}
+
+		} 
+		
 }
+

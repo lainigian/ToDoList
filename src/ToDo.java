@@ -1,14 +1,80 @@
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import fileTxt.FileException;
 
 public class ToDo 
 {
 	
-	private static Progetto p1=new Progetto("Corso informatica");
+	private static Progetto p1; //p1 punta al progetto Selezionato.
+	//=new Progetto("Corso informatica");
+	private static String workingDir = System.getProperty("user.dir")+"\\elencoProgetti\\"; //directory del progetto corrente
 	
+	
+	public static String[] elencaProgetti()
+	{
+		File filesPresenti=new File(workingDir); //classe File, crea una rappresentazione astratta dei file in una directory
+						
+		int numeroFilesPresenti=filesPresenti.list().length;
+		String[] elencoProgetti=new String[numeroFilesPresenti];
+		elencoProgetti=filesPresenti.list();
+		for (int i = 0; i < numeroFilesPresenti; i++)
+			elencoProgetti[i]=elencoProgetti[i].substring(0, elencoProgetti[i].length()-4); //tolgo l'estensione.bin ai nomi dei file
+		return elencoProgetti;		
+	}
+	
+/*	public static Progetto selezionaProgetto(String denominazione) throws progettoNonPresente
+	{
+		String[] elencoProgetti=elencaProgetti();
+		for (int i = 0; i < elencoProgetti.length; i++) 
+		{
+			if(elencoProgetti[i].equals(denominazione))
+			{
+				caricaProgetto(denominazione);
+				return p1;
+			}		
+		}	
+		throw new progettoNonPresente(denominazione);	
+	}
+*/	
+	private static void caricaProgetto(String denominazione)
+	{	
+		try 
+		{	
+			FileInputStream fileProgetto=new FileInputStream(workingDir+denominazione+".bin");
+			ObjectInputStream streamInput= new ObjectInputStream(fileProgetto);
+			p1=(Progetto)streamInput.readObject();
+			fileProgetto.close();
+			
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (EOFException e)
+		{
+	
+		}
+		catch (ClassNotFoundException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public static void salvaProgetto()
 	{
@@ -17,7 +83,7 @@ public class ToDo
 
 		try 
 		{
-			fileProgetto = new FileOutputStream(workingDir+"\\progetti\\"+p1.getDenominazione()+".bin");
+			fileProgetto = new FileOutputStream(workingDir+"\\elencoProgetti\\"+p1.getDenominazione()+".bin");
 			ObjectOutputStream outputStream=new ObjectOutputStream(fileProgetto);
 			outputStream.writeObject(p1);
 			outputStream.flush();
@@ -30,10 +96,69 @@ public class ToDo
 		} 
 	}
 	
-	public static void main(String[] args) 
+	public static void creaProgetto(String nome)
 	{
+		p1=new Progetto(nome);	
+	}
+	
+	//elimina file
+	public static void eliminaProgetto(String nome)
+	{
+		File daEliminare = new File(workingDir+nome+".bin"); //Referenzia oggetto file da percorso
+		if(daEliminare.exists()) //se esiste...
+		{
+			if(daEliminare.delete()) //prova a eliminarlo...
+				System.out.println("Progetto eliminato!"); //e conferma...
+		}
+		else
+		{
+			System.out.println("Il progetto non è stato mai salvato!");//altrimenti avverte l'utente
+		}
+	}
+	public static void main(String[] args) throws MaxNumeroAttivitaRaggiunto 
+	{
+		String[] elencoProgetti=elencaProgetti();
+		for (int i = 0; i < elencoProgetti.length; i++) 
+		{
+			System.out.println(elencoProgetti[i]);
+		}
+	
+//--------Test elimina progetto (eliminafile)---------
 		
-		//Progetto p1=new Progetto ("Corso informatica");
+		eliminaProgetto(elencoProgetti[1]);
+		elencoProgetti=elencaProgetti();
+		for (int i = 0; i < elencoProgetti.length; i++) 
+		{
+			System.out.println(elencoProgetti[i]);
+		}
+		
+//-----------Test carica progetto-----------------------
+	//	caricaProgetto(elencoProgetti[0]);
+	//	System.out.println(p1.getDenominazione());
+		
+/*//----------Test crea progetto--------------------OK
+		creaProgetto("Corso TPS");
+		Attivita[] elencoAttivita;
+		elencoAttivita=p1.elencaAttivita();
+		if (elencoAttivita.length==0)
+			System.out.println("nessuna attività presente");
+		else
+			for (int i = 0; i < elencoAttivita.length; i++) 
+			{
+				System.out.println(elencoAttivita[i].getDescrizione());
+			}
+		
+*/
+			
+		
+//-----------Test salva progetto creato-----------------OK
+		//salvaProgetto();
+		
+
+		
+		
+		
+		/*	//Progetto p1=new Progetto ("Corso informatica");
 		 
 		try 
 		{
@@ -94,10 +219,10 @@ public class ToDo
 		String workingDir = System.getProperty("user.dir"); //directory del progetto corrente
 		try 
 		{
-			p1.esportaAttivitaSuFile(workingDir+"\\progetti\\"+p1.getDenominazione()+".txt");
-			p1.esportaAttivitaCompletateSuFile(workingDir+"\\progetti\\"+p1.getDenominazione()+"_completate.txt");
+			p1.esportaAttivitaSuFile(workingDir+"\\stampeProgetti\\"+p1.getDenominazione()+".txt");
+			p1.esportaAttivitaCompletateSuFile(workingDir+"\\stampeProgetti\\"+p1.getDenominazione()+"_completate.txt");
 			Date dataScadenza2=new Date(15,2,2018);
-			p1.esportaAttivitaInScadenzaSuFile(dataScadenza,workingDir+"\\progetti\\"+p1.getDenominazione()+"_in_Scadenza_"+dataScadenza.getDay()+
+			p1.esportaAttivitaInScadenzaSuFile(dataScadenza,workingDir+"\\stampeProgetti\\"+p1.getDenominazione()+"_in_Scadenza_"+dataScadenza.getDay()+
 					"_"+dataScadenza.getMonth()+"_"+dataScadenza.getYear()+".txt");
 		} 
 		catch (IOException e) 
@@ -111,7 +236,17 @@ public class ToDo
 			e.printStackTrace();
 		}
 
-		salvaProgetto();
+		//salvaProgetto();
+		String[] elencoProgetti=elencaProgetti();
+		for (int i = 0; i < elencoProgetti.length; i++) 
+		{
+			System.out.println(elencoProgetti[i]);
+		}
+*/
+		
+		
+		
+		
 	}
 
 }
