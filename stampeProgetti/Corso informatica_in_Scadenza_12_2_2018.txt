@@ -1,2 +1,0 @@
-Introduzione alla OOP;15\10\2017;0;
-Linguaggio JAVA;1\12\2017;0;

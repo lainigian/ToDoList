@@ -4,6 +4,8 @@ import java.util.GregorianCalendar;
 
 import javax.xml.crypto.NoSuchMechanismException;
 
+import fileTxt.FileException;
+
 public class MainClass 
 {
 
@@ -12,7 +14,6 @@ public class MainClass
 		// TODO Auto-generated method stub
 		
 		String[] vociMenu= {"0 --> ESCI","1 --> Elenca progetti", "2 --> Apri un progetto","3 --> Crea un nuovo progetto"};
-		
 		Menu2 menuIniziale=new Menu2(vociMenu);
 		Progetto progetto;
 		ConsoleInput tastiera= new ConsoleInput();
@@ -82,10 +83,11 @@ public class MainClass
 		ConsoleInput tastiera= new ConsoleInput();
 		String descrizioneAttivita;
 		int sceltaMenu=0;
-		GregorianCalendar gc = new GregorianCalendar();
-		int oggiAnno = gc.get(Calendar.YEAR);
-		int oggiMese=gc.get(Calendar.MONTH);
-		int oggiGiorno=gc.get(Calendar.DAY_OF_MONTH);
+	//	GregorianCalendar gc = new GregorianCalendar();
+	//	int oggiAnno = gc.get(Calendar.YEAR);
+	//	int oggiMese=gc.get(Calendar.MONTH);
+	//	int oggiGiorno=gc.get(Calendar.DAY_OF_MONTH);
+		String directoryDelProgetto = System.getProperty("user.dir");
 		
 		Attivita[] elencoAttivita;
 	do
@@ -115,6 +117,19 @@ public class MainClass
 				int p=tastiera.readInt();
 				progetto.aggiornaAttivita(descrizioneAttivita, p);
 				break;
+			
+			case 3:
+				System.out.println("Inserisci il nome della nuova attività");
+				String nomeAttivita=tastiera.readString();
+				System.out.println("Inserisci la data di scadenza\nGiorno:");
+				int giorno=tastiera.readInt();
+				System.out.println("Mese:");
+				int mese=tastiera.readInt();
+				System.out.println("Anno:");
+				int anno=tastiera.readInt();
+				
+				progetto.creaAttivita(nomeAttivita, new Date(giorno,mese, anno));
+				break;
 				
 			case 4:
 				System.out.println("Inserisci il nome dell'attività da eliminare");
@@ -140,31 +155,69 @@ public class MainClass
 				else
 					System.out.println("Operazione annullata");
 				break;
-			
-			
-			case 3:
-				System.out.println("Inserisci il nome della nuova attività");
-				String nomeAttivita=tastiera.readString();
-				System.out.println("Inserisci la data di scadenza\nGiorno:");
-				int giorno=tastiera.readInt();
-				System.out.println("Mese:");
-				int mese=tastiera.readInt();
-				System.out.println("Anno:");
-				int anno=tastiera.readInt();
-				
-				progetto.creaAttivita(nomeAttivita, new Date(giorno,mese, anno));
-				break;
-			
 				
 			case 5:
-				elencoAttivita=progetto.elencaAttivita();
+				elencoAttivita=progetto.elencaAttivita();					
 				for (int i = 0; i < elencoAttivita.length; i++) 
 				{
 					System.out.println(elencoAttivita[i].toString());
 				}
+				if(elencoAttivita.length==0)
+					System.out.println("Nessuna attività presente");
 				break;
 			
+			case 6:
+				elencoAttivita=progetto.elencaAttivitaCompletate();
+				for (int i = 0; i < elencoAttivita.length; i++) 
+				{
+					System.out.println(elencoAttivita[i].toString());
+				}
+				if(elencoAttivita.length==0)
+					System.out.println("Nessuna attività presente");
+				break;
+			
+			case 7:
+				System.out.println("Elenco delle attività non ancor completate in scadenza entro una determinata data.\nInserisci la data:\nGiorno: ");
+				giorno=tastiera.readInt();
+				System.out.println("Mese: ");
+				mese=tastiera.readInt();
+				System.out.println("Anno: ");
+				anno=tastiera.readInt();
+				elencoAttivita=progetto.elencaAttivitaInScadenza(new Date(giorno,mese,anno));
+				for (int i = 0; i < elencoAttivita.length; i++) 
+				{
+					System.out.println(elencoAttivita[i].toString());
+				}
+				if(elencoAttivita.length==0)
+					System.out.println("Nessuna attività presente");
+				break;	
 				
+			case 8:
+				progetto.esportaAttivitaSuFile(directoryDelProgetto+"\\stampeProgetti\\"+progetto.getDenominazione()+".txt");					
+				System.out.println("Progetto esportato correttamente su file di testo:");
+				System.out.println(directoryDelProgetto+"\\stampeProgetti\\"+progetto.getDenominazione()+".txt");
+				break;
+			
+			case 9:
+				progetto.esportaAttivitaCompletateSuFile(directoryDelProgetto+"\\stampeProgetti\\"+progetto.getDenominazione()+"_Completate.txt");					
+				System.out.println("Attività completate esportate correttamente su file di testo:");
+				System.out.println(directoryDelProgetto+"\\stampeProgetti\\"+progetto.getDenominazione()+"_Completate.txt");
+				break;
+				
+			case 10:
+				System.out.println("Creazione file di testo contenente le attività non ancor completate in scadenza entro una determinata data.\nInserisci la data:\nGiorno: ");
+				giorno=tastiera.readInt();
+				System.out.println("Mese: ");
+				mese=tastiera.readInt();
+				System.out.println("Anno: ");
+				anno=tastiera.readInt();
+				Date dataScadenza= new Date(giorno,mese,anno);
+				progetto.esportaAttivitaInScadenzaSuFile(dataScadenza, directoryDelProgetto+"\\stampeProgetti\\"+progetto.getDenominazione()+"_in_scadenza_"+dataScadenza.getDay()+"_"+
+				dataScadenza.getMonth()+"_"+dataScadenza.getYear()+".txt");
+				//progetto.esportaAttivitaCompletateSuFile(directoryDelProgetto+"\\stampeProgetti\\"+progetto.getDenominazione()+"_Scadenza.txt");					
+				System.out.println("Attività in scadenza esportate correttamente su file di testo:");
+				System.out.println(directoryDelProgetto+"\\stampeProgetti\\"+progetto.getDenominazione()+"_in_scadenza_"+dataScadenza.toString()+".txt");
+				break;
 				
 			case 11:
 				ToDo.salvaProgetto(progetto);
@@ -211,6 +264,11 @@ public class MainClass
 		{
 			System.out.println(e.getMessage());		
 			//e.printStackTrace();
+		} catch (FileException e) 
+		{
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	} while (sceltaMenu!=0 && sceltaMenu!=12);
 		

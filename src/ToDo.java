@@ -21,6 +21,10 @@ public class ToDo
 	private static String workingDir = System.getProperty("user.dir")+"\\elencoProgetti\\"; //directory del progetto corrente
 	
 	
+	public static String getDirectoryCorrente()
+	{
+		return workingDir;
+	}
 	public static String[] elencaProgetti()
 	{
 		File filesPresenti=new File(workingDir); //classe File, crea una rappresentazione astratta dei file in una directory
