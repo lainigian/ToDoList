@@ -47,33 +47,14 @@ public class ToDo
 		throw new progettoNonPresente(denominazione);	
 	}
 */	
-	private static void caricaProgetto(String denominazione)
+	public static Progetto caricaProgetto(String denominazione) throws IOException, ClassNotFoundException
 	{	
-		try 
-		{	
-			FileInputStream fileProgetto=new FileInputStream(workingDir+denominazione+".bin");
-			ObjectInputStream streamInput= new ObjectInputStream(fileProgetto);
-			p1=(Progetto)streamInput.readObject();
-			fileProgetto.close();
-			
-		} 
-		catch (FileNotFoundException e) 
-		{
-			e.printStackTrace();
-		} 
-		catch (EOFException e)
-		{
-	
-		}
-		catch (ClassNotFoundException e) 
-		{
-			e.printStackTrace();
-		} 
-		catch (IOException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		FileInputStream fileProgetto=new FileInputStream(workingDir+denominazione+".bin");
+		ObjectInputStream streamInput= new ObjectInputStream(fileProgetto);
+		p1=(Progetto)streamInput.readObject();
+		fileProgetto.close();
+		return new Progetto(p1);
 	}
 	
 	public static void salvaProgetto()
@@ -96,36 +77,68 @@ public class ToDo
 		} 
 	}
 	
-	public static void creaProgetto(String nome)
+	public static Progetto creaProgetto(String nome)
 	{
 		p1=new Progetto(nome);	
+		return p1;
 	}
 	
 	//elimina file
-	public static void eliminaProgetto(String nome)
+	public static boolean eliminaProgetto(String nome) throws progettoNonPresente, IOException
 	{
-		File daEliminare = new File(workingDir+nome+".bin"); //Referenzia oggetto file da percorso
+		File daEliminare = new File(workingDir+nome+".bin"); //Referenzia oggetto file da percorso		
 		if(daEliminare.exists()) //se esiste...
 		{
-			if(daEliminare.delete()) //prova a eliminarlo...
+		/*	if(daEliminare.delete()) //prova a eliminarlo... 
 				System.out.println("Progetto eliminato!"); //e conferma...
+			else
+				throw new IOException("Accesso al file non consentito");
+		*/
+			return daEliminare.delete();
 		}
 		else
 		{
-			System.out.println("Il progetto non è stato mai salvato!");//altrimenti avverte l'utente
+			throw new progettoNonPresente(nome); 
 		}
 	}
-	public static void main(String[] args) throws MaxNumeroAttivitaRaggiunto 
+	
+/*	public static void main(String[] args) throws MaxNumeroAttivitaRaggiunto, ClassNotFoundException, IOException 
 	{
 		String[] elencoProgetti=elencaProgetti();
 		for (int i = 0; i < elencoProgetti.length; i++) 
 		{
 			System.out.println(elencoProgetti[i]);
 		}
-	
-//--------Test elimina progetto (eliminafile)---------
 		
-		eliminaProgetto(elencoProgetti[1]);
+		//-----------Test carica progetto-----------------------
+				caricaProgetto(elencoProgetti[0]);
+				System.out.println(p1.getDenominazione());
+	
+	}
+*/
+}
+
+
+
+
+
+
+
+
+/*
+public static void main(String[] args) throws MaxNumeroAttivitaRaggiunto 
+{
+	String[] elencoProgetti=elencaProgetti();
+	for (int i = 0; i < elencoProgetti.length; i++) 
+	{
+		System.out.println(elencoProgetti[i]);
+	}
+}
+	
+
+//--------Test elimina progetto (eliminafile)---------OK
+		
+/*		eliminaProgetto(elencoProgetti[1]);
 		elencoProgetti=elencaProgetti();
 		for (int i = 0; i < elencoProgetti.length; i++) 
 		{
@@ -133,11 +146,11 @@ public class ToDo
 		}
 		
 //-----------Test carica progetto-----------------------
-	//	caricaProgetto(elencoProgetti[0]);
-	//	System.out.println(p1.getDenominazione());
+		caricaProgetto(elencoProgetti[0]);
+		System.out.println(p1.getDenominazione());
 		
-/*//----------Test crea progetto--------------------OK
-		creaProgetto("Corso TPS");
+//----------Test crea progetto--------------------OK
+/*		creaProgetto("Corso TPS");
 		Attivita[] elencoAttivita;
 		elencoAttivita=p1.elencaAttivita();
 		if (elencoAttivita.length==0)
@@ -247,6 +260,3 @@ public class ToDo
 		
 		
 		
-	}
-
-}

@@ -22,6 +22,16 @@ public class Progetto implements Serializable
 		elencoAttivita=new Attivita[MAX_NUMERO_ATTIVITA];
 	}
 	
+	public Progetto (Progetto progetto)
+	{
+		this.denominazione=progetto.getDenominazione();
+		elencoAttivita=new Attivita[MAX_NUMERO_ATTIVITA];
+		for (int i = 0; i < MAX_NUMERO_ATTIVITA; i++) 
+		{
+			if (progetto.elencoAttivita[i]!=null)
+				elencoAttivita[i]=new Attivita(progetto.elencoAttivita[i]);
+		}
+	}
 	
 	public String getDenominazione()
 	{
@@ -84,9 +94,9 @@ public class Progetto implements Serializable
 	 * Aggiorna la percentuale di svolgimento di una attività. Se la percentuale assegnata è <0 o >100 il valore
 	 * di percentuale di svolgimento non viene modificato. Se la percentuale è =100 vine aggiornata nache la data
 	 * di completamento dell'attività
-	 * @param descrizione	identificca l'attività da aggiornare
-	 * @param percentualeSvolgimento	valore a cui deve essere impostata la percentuale di aggiornamento 
-	 * @param dataAggiornamento data a cui viene realizzato l'aggiornamento. Se la percentuale di aggiornamento è pari a 100
+	 * @param descrizione	identifica l'attività da aggiornare
+	 * @param percentualeSvolgimento valore a cui deve essere impostata la percentuale di aggiornamento 
+	 * @param dataAggiornamento data in cui viene realizzato l'aggiornamento. Se la percentuale di aggiornamento è pari a 100
 	 * questa data viene impostata come Data di completamento dell'attivitò
 	 * @throws AttivitaNonPresente	viene sollevata quando l'attività identificata da "descrizione" non è prsente nell'array
 	 * di attività che compongono il progetto
