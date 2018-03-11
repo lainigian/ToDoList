@@ -161,7 +161,7 @@ public class MainClass
 				
 				
 			case 11:
-				ToDo.salvaProgetto();
+				ToDo.salvaProgetto(progetto);
 				break;
 			
 			default:

@@ -16,7 +16,7 @@ import fileTxt.FileException;
 public class ToDo 
 {
 	
-	private static Progetto p1; //p1 punta al progetto Selezionato.
+	//private static Progetto p1; //p1 punta al progetto Selezionato.
 	//=new Progetto("Corso informatica");
 	private static String workingDir = System.getProperty("user.dir")+"\\elencoProgetti\\"; //directory del progetto corrente
 	
@@ -50,6 +50,7 @@ public class ToDo
 	public static Progetto caricaProgetto(String denominazione) throws IOException, ClassNotFoundException
 	{	
 		
+		Progetto p1;
 		FileInputStream fileProgetto=new FileInputStream(workingDir+denominazione+".bin");
 		ObjectInputStream streamInput= new ObjectInputStream(fileProgetto);
 		p1=(Progetto)streamInput.readObject();
@@ -57,7 +58,7 @@ public class ToDo
 		return new Progetto(p1);
 	}
 	
-	public static void salvaProgetto()
+	public static void salvaProgetto(Progetto p1)
 	{
 		String workingDir = System.getProperty("user.dir"); //directory del progetto corrente
 		FileOutputStream fileProgetto;
@@ -79,7 +80,7 @@ public class ToDo
 	
 	public static Progetto creaProgetto(String nome)
 	{
-		p1=new Progetto(nome);	
+		Progetto p1=new Progetto(nome);	
 		return p1;
 	}
 	
