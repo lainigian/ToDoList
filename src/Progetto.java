@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import fileTxt.*;
 
@@ -92,8 +94,8 @@ public class Progetto implements Serializable
 	
 	/**
 	 * Aggiorna la percentuale di svolgimento di una attività. Se la percentuale assegnata è <0 o >100 il valore
-	 * di percentuale di svolgimento non viene modificato. Se la percentuale è =100 vine aggiornata nache la data
-	 * di completamento dell'attività
+	 * di percentuale di svolgimento non viene modificato. Se la percentuale è =100 vine aggiornata anche la data
+	 * di completamento dell'attività impostando la data del giorno in cui avviene l'aggiornamento.
 	 * @param descrizione	identifica l'attività da aggiornare
 	 * @param percentualeSvolgimento valore a cui deve essere impostata la percentuale di aggiornamento 
 	 * @param dataAggiornamento data in cui viene realizzato l'aggiornamento. Se la percentuale di aggiornamento è pari a 100
@@ -101,7 +103,7 @@ public class Progetto implements Serializable
 	 * @throws AttivitaNonPresente	viene sollevata quando l'attività identificata da "descrizione" non è prsente nell'array
 	 * di attività che compongono il progetto
 	 */
-	public void aggiornaAttivita(String descrizione, int percentualeSvolgimento, Date dataAggiornamento) throws AttivitaNonPresente
+	public void aggiornaAttivita(String descrizione, int percentualeSvolgimento) throws AttivitaNonPresente
 	{
 		Attivita attivita;
 		for (int i = 0; i < elencoAttivita.length; i++) 
@@ -111,6 +113,9 @@ public class Progetto implements Serializable
 				attivita=elencoAttivita[i];
 				if (attivita.getDescrizione().equals(descrizione))
 				{
+					Date dataAggiornamento;
+					GregorianCalendar gc=new GregorianCalendar();
+					dataAggiornamento=new Date(gc.get(Calendar.DAY_OF_MONTH),gc.get(Calendar.MONTH+1),gc.get(Calendar.YEAR));
 					elencoAttivita[i].setSvolgimento(percentualeSvolgimento, dataAggiornamento);
 					return;	//attivita aggiornata
 				}
@@ -264,10 +269,10 @@ public class Progetto implements Serializable
 		}
 		fileAttivita.close();
 	}
-	public static void main(String[] args) 
+/*	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub
-		/*//---------------------------------------------------------------------------------------------------------------	
+		//---------------------------------------------------------------------------------------------------------------	
 		Progetto p1=new Progetto ("Corso informatica");
 		 
 		try 
@@ -365,7 +370,7 @@ public class Progetto implements Serializable
 			e.printStackTrace();
 		} 
 					
-*///-----------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------
 		
 		//-----------------------deserializzazione di un progetto   OK funziona--------------------------------
 		Attivita[] elenco;
@@ -405,6 +410,6 @@ public class Progetto implements Serializable
 			}
 
 		} 
-		
+*/		
 }
 

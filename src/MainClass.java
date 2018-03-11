@@ -11,7 +11,7 @@ public class MainClass
 	{
 		// TODO Auto-generated method stub
 		
-		String[] vociMenu= {"0 --> ESCI","1 --> Elenca progetti", "2 --> Apri un progetto","3 --> Crea un nuovo progetto","4 --> Elimina un progetto"};
+		String[] vociMenu= {"0 --> ESCI","1 --> Elenca progetti", "2 --> Apri un progetto","3 --> Crea un nuovo progetto"};
 		
 		Menu2 menuIniziale=new Menu2(vociMenu);
 		Progetto progetto;
@@ -27,7 +27,7 @@ public class MainClass
 				switch (sceltaMenu) 
 				{
 				case 1:
-					
+					elencoProgetti=ToDo.elencaProgetti();
 					for (int i = 0; i < elencoProgetti.length; i++) 
 						System.out.println(elencoProgetti[i]);
 					break;
@@ -44,21 +44,7 @@ public class MainClass
 					progetto=new Progetto(ToDo.creaProgetto(nomeProgetto));
 					gestioneProgetto(progetto);
 					break;
-				
-				case 4:
-					System.out.println("Inserisci il nome del progetto da eliminare");
-					nomeProgetto=tastiera.readString();
-					System.out.println("Il progetto "+nomeProgetto+ " verrà definitivamente eliminato! Continuare? (scegli si o annulla)");
-					String continua=tastiera.readString();
-					if (continua=="si")
-					{
-						if (ToDo.eliminaProgetto(nomeProgetto))
-							System.out.println("Progetto eliminato");
-						else
-							System.out.println("Non è stato possibile eliminare il progetto");	
-					}
-					else
-						System.out.println("operazione annullata");		
+	
 				default:
 					break;
 				}
@@ -67,21 +53,16 @@ public class MainClass
 			catch (IOException e) 
 			{
 				// TODO Auto-generated catch block
+				System.out.println("Errore nell'apertura del file");
 				System.out.println(e.getMessage());
-				e.printStackTrace();
+				//e.printStackTrace();
 			} 
 			catch (ClassNotFoundException e) 
 			{
 				// TODO Auto-generated catch block
-				System.out.println("Errore nel cricamento del progetto");
-				e.printStackTrace();
+				System.out.println("Errore nel caricamento del progetto");
+				//e.printStackTrace();
 			}
-			catch (progettoNonPresente e) 
-			{
-				// TODO Auto-generated catch block
-				e.toString();
-				e.printStackTrace();
-			}	
 
 		}while (sceltaMenu!=0);
 		
@@ -96,7 +77,7 @@ public class MainClass
 						"2 --> Aggiorna percentuale di svolgimento di una attività", "3 --> Crea nuova attività", "4 --> Elimina attività",
 					"5 --> Visualizza tutte le attività","6 --> Visualizza attività completate", "7 --> Visualizza attività in scadenza", 
 						"8 --> Esporta su file tutte le attività", "9 --> Esporta su file attività completate", 
-						"10 --> Esporta su file attività in scadenza", "11 --> Salva modifiche al progetto"};
+						"10 --> Esporta su file attività in scadenza", "11 --> Salva modifiche al progetto","12 --> Elimina progetto" };
 		Menu2 menuProgetto=new Menu2(vociMenuProgetto);
 		ConsoleInput tastiera= new ConsoleInput();
 		String descrizioneAttivita;
@@ -132,9 +113,34 @@ public class MainClass
 				descrizioneAttivita=tastiera.readString();
 				System.out.println("Inserisci la nuova percentuale di svolgimento:");
 				int p=tastiera.readInt();
-				nuovaData= new Date(oggiGiorno,oggiMese,oggiAnno);	
-				progetto.aggiornaAttivita(descrizioneAttivita, nuovaData);
+				progetto.aggiornaAttivita(descrizioneAttivita, p);
 				break;
+				
+			case 4:
+				System.out.println("Inserisci il nome dell'attività da eliminare");
+				descrizioneAttivita=tastiera.readString();
+				System.out.println(" Attività da eliminare: ");
+				elencoAttivita=progetto.elencaAttivita();
+				String conferma="";
+				for (int i = 0; i < elencoAttivita.length; i++) 
+				{
+					if (elencoAttivita[i].getDescrizione().compareToIgnoreCase(descrizioneAttivita)==0)
+					{
+						System.out.println("L'attività "+descrizioneAttivita+" verrà eliminata. Procedere? (si/no)");
+						conferma=tastiera.readString();
+						break;
+					}	
+				}
+				
+				if (conferma.compareTo("si")==0)
+				{
+					progetto.eliminaAttivita(descrizioneAttivita);
+					System.out.println("Attività eliminata!");
+				}		
+				else
+					System.out.println("Operazione annullata");
+				break;
+			
 			
 			case 3:
 				System.out.println("Inserisci il nome della nuova attività");
@@ -164,6 +170,19 @@ public class MainClass
 				ToDo.salvaProgetto(progetto);
 				break;
 			
+			case 12:
+				System.out.println("Il progetto: "+progetto.getDenominazione()+ "\nverrà definitivamente eliminato! Continuare? (scegli si o annulla)");
+				String continua=tastiera.readString();
+				if (continua.compareToIgnoreCase("si")==0)
+				{
+					if (ToDo.eliminaProgetto(progetto.getDenominazione()))
+						System.out.println("Progetto eliminato!");
+					else
+						System.out.println("Non è stato possibile eliminare il progetto");	
+				}
+				else
+					System.out.println("Operazione annullata");	
+			
 			default:
 				break;
 			}
@@ -181,13 +200,19 @@ public class MainClass
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-		} catch (MaxNumeroAttivitaRaggiunto e) 
+		} 
+		catch (MaxNumeroAttivitaRaggiunto e) 
 		{
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+		} 
+		catch (progettoNonPresente e) 
+		{
+			System.out.println(e.getMessage());		
+			//e.printStackTrace();
 		}
-	} while (sceltaMenu!=0);
+	} while (sceltaMenu!=0 && sceltaMenu!=12);
 		
 		
 		
