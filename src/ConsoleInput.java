@@ -55,7 +55,7 @@ public class ConsoleInput
 	 * @throws IOException mancata lettura
 	 * @return valore boolean letto
 	 */
-	public boolean readBoolean() throws IOException
+	public boolean readBoolean() throws IOException,NumberFormatException
 	{
 		return Boolean.parseBoolean(reader.readLine());
 	}
@@ -67,9 +67,12 @@ public class ConsoleInput
 	 * @return stringa letta
 	 */
 	
-	public String readString() throws IOException
+	public String readString() throws IOException, NumberFormatException
 	{
-		return (reader.readLine());
+		String s=reader.readLine();
+		if (s.compareTo("")==0)
+			throw new NumberFormatException();
+		return (s);
 	}
 }
 

@@ -64,6 +64,12 @@ public class MainClass
 				System.out.println("Errore nel caricamento del progetto");
 				//e.printStackTrace();
 			}
+			
+			catch (NumberFormatException e) 
+			{
+				System.out.println("Formato del dato inserito non corretto. Ripetere l'operazione");
+				sceltaMenu=-1;
+			}
 
 		}while (sceltaMenu!=0);
 		
@@ -264,11 +270,17 @@ public class MainClass
 		{
 			System.out.println(e.getMessage());		
 			//e.printStackTrace();
-		} catch (FileException e) 
+		} 
+		catch (FileException e) 
 		{
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+		}
+		catch (NumberFormatException e) 
+		{
+			System.out.println("Formato del dato inserito non corretto. Ripetere l'operazione");
+			sceltaMenu=-1;
 		}
 	} while (sceltaMenu!=0 && sceltaMenu!=12);
 		
