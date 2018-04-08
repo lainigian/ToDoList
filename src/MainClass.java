@@ -18,7 +18,7 @@ public class MainClass
 		Progetto progetto;
 		ConsoleInput tastiera= new ConsoleInput();
 		int sceltaMenu=0;
-		String[] elencoProgetti=ToDo.elencaProgetti();
+		String[] elencoProgetti=ToDoInterfaccia.elencaProgetti();
 		
 		do
 		{
@@ -28,21 +28,21 @@ public class MainClass
 				switch (sceltaMenu) 
 				{
 				case 1:
-					elencoProgetti=ToDo.elencaProgetti();
+					elencoProgetti=ToDoInterfaccia.elencaProgetti();
 					for (int i = 0; i < elencoProgetti.length; i++) 
 						System.out.println(elencoProgetti[i]);
 					break;
 				case 2:
 					System.out.println("Inserisci il nome del progetto da aprire: ");
 					String nomeProgetto=tastiera.readString();
-					progetto=new Progetto (ToDo.caricaProgetto(nomeProgetto));
+					progetto=new Progetto (ToDoInterfaccia.caricaProgetto(nomeProgetto));
 					gestioneProgetto(progetto); 
 					break;
 				
 				case 3:
 					System.out.println("Inserisci il nome del nuovo progetto");
 					nomeProgetto=tastiera.readString();
-					progetto=new Progetto(ToDo.creaProgetto(nomeProgetto));
+					progetto=new Progetto(ToDoInterfaccia.creaProgetto(nomeProgetto));
 					gestioneProgetto(progetto);
 					break;
 	
@@ -226,7 +226,7 @@ public class MainClass
 				break;
 				
 			case 11:
-				ToDo.salvaProgetto(progetto);
+				ToDoInterfaccia.salvaProgetto(progetto);
 				break;
 			
 			case 12:
@@ -234,7 +234,7 @@ public class MainClass
 				String continua=tastiera.readString();
 				if (continua.compareToIgnoreCase("si")==0)
 				{
-					if (ToDo.eliminaProgetto(progetto.getDenominazione()))
+					if (ToDoInterfaccia.eliminaProgetto(progetto.getDenominazione()))
 						System.out.println("Progetto eliminato!");
 					else
 						System.out.println("Non è stato possibile eliminare il progetto");	

@@ -13,6 +13,8 @@ import java.nio.file.Paths;
 
 import fileTxt.FileException;
 
+
+//-----------------------codic funzionante--------------------------------
 public class ToDo 
 {
 	
