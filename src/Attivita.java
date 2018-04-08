@@ -84,7 +84,7 @@ public class Attivita implements Serializable
 			
 	}
 	
-	public static void main(String[] args) 
+	/*public static void main(String[] args) 
 	{
 		// debug
 		Date data1=new Date(20,3,2018);
@@ -94,6 +94,6 @@ public class Attivita implements Serializable
 		System.out.println(a1.toString());
 		a1.setSvolgimento(100, new Date(15,2,2018));
 		System.out.println(a1.toString());
-	}
+	}*/
 
 }

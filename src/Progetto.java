@@ -10,7 +10,7 @@ import java.util.GregorianCalendar;
 
 import fileTxt.*;
 
-public class Progetto implements Serializable
+public class Progetto implements Serializable, ToDoInterfaccia
 
 {
 	private static final int MAX_NUMERO_ATTIVITA=20;

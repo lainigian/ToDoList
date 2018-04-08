@@ -59,9 +59,9 @@ public interface ToDoInterfaccia
 		} 
 	}
 	
-	public static Progetto creaProgetto(String nome)
+	public static Progetto creaProgetto(String denominazione)
 	{
-		Progetto p1=new Progetto(nome);	
+		Progetto p1=new Progetto(denominazione);	
 		return p1;
 	}
 	
