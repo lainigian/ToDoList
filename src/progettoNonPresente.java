@@ -1,4 +1,8 @@
-
+/**
+ * Eccezione. Indica che il progetto selezionato non è presente
+ * @author Laini Gian Marco
+ *
+ */
 public class progettoNonPresente extends Exception 
 {
 	

@@ -1,6 +1,14 @@
 package fileTxt;
 import java.io.*;
 
+/**
+ * Classe di utilità per la gestione della scrittura di un file di testo.
+ * La lasse consente di aprire e chiudere un file di testo in lettura o in scrittura e fornisce
+ * i metodi per la scrittura di una stringa sul file (metodo toFile) e per la lettura di una stringa 
+ * dal file (metodo fromFile)
+ * @author User
+ *
+ */
 public class TextFile 
 {
 

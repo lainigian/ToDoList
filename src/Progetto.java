@@ -10,6 +10,12 @@ import java.util.GregorianCalendar;
 
 import fileTxt.*;
 
+/**
+ * La classe rappresenta un progetto. ogni progetto è composto da un certo numero di atttività. Il numero massimo di 
+ * attività è 20. Gli attributi sono: "denominazione" che indica il nome del progetto e "elenco attività" che è una array di attività
+ * @author User
+ *
+ */
 public class Progetto implements Serializable, ToDoInterfaccia
 
 {
@@ -17,12 +23,20 @@ public class Progetto implements Serializable, ToDoInterfaccia
 	private String denominazione;
 	private Attivita[] elencoAttivita;
 
-	
+	/**
+	 * Costruttore
+	 * @param denominazione Il nome da assegnare al progetto
+	 */
 	public Progetto(String denominazione)
 	{
 		this.denominazione=denominazione;
 		elencoAttivita=new Attivita[MAX_NUMERO_ATTIVITA];
 	}
+	
+	/**
+	 * Costruttore di copia. Crea una copia del progetto passato come parametro.
+	 * @param progetto Il progetto di cui creare una copia.
+	 */
 	
 	public Progetto (Progetto progetto)
 	{
@@ -35,11 +49,22 @@ public class Progetto implements Serializable, ToDoInterfaccia
 		}
 	}
 	
+	/**
+	 * Metodo getter che restituisce la denominazione di un progetto
+	 * @return
+	 */
 	public String getDenominazione()
 	{
 		return denominazione;
 	}
 	
+	/**
+	 * Consente di creare una nuova attività nel progetto istanziato.
+	 * @param descrizione La descrizione dell'attività da creare
+	 * @param scadenza La data di scadenza dell'attività da creare
+	 * @throws MaxNumeroAttivitaRaggiunto Eccezione che si genera in seguito al tentativo di creare una nuova attività
+	 * in un progetto in cui sono già presenti un numero di attività pri al numero massimo.
+	 */
 	public void creaAttivita(String descrizione, Date scadenza) throws MaxNumeroAttivitaRaggiunto
 	{
 		for (int i = 0; i < elencoAttivita.length; i++) 
@@ -53,6 +78,12 @@ public class Progetto implements Serializable, ToDoInterfaccia
 		throw new MaxNumeroAttivitaRaggiunto(); // se esco dal ciclo senza creare attività è perchè 'non c'è più posto
 	}
 	
+	/**
+	 * Elimina un'attivita dal progetto istanziato
+	 * @param descrizione La descrizione dell'attività da eliminare
+	 * @throws AttivitaNonPresente Eccezione generata nel caso in cui si cera di eliminare una attività
+	 * la cui descrizione non è presente nell'elenco delle attività del progetto
+	 */
 	public void eliminaAttivita(String descrizione) throws AttivitaNonPresente
 	{
 		Attivita attivita;
@@ -72,6 +103,13 @@ public class Progetto implements Serializable, ToDoInterfaccia
 		throw new AttivitaNonPresente(); //attivita non trovata
 	}
 	
+	/**
+	 * Consente di aggiornare la data di scadenza di una attività.
+	 * @param descrizione La descrizione dell'attività da aggiornare
+	 * @param dataScadenza La nuova data di scadenza della attività.
+	 * @throws AttivitaNonPresente Eccezione sollevata nel caso in cui la descrizione della attività da aggiornare non corrisponda
+	 * a quella di alcuna attività presente nel progetto.
+	 */
 	public void aggiornaAttivita(String descrizione, Date dataScadenza) throws AttivitaNonPresente
 	{
 		Attivita attivita;
@@ -93,15 +131,14 @@ public class Progetto implements Serializable, ToDoInterfaccia
 	
 	
 	/**
+	 * Overloading
 	 * Aggiorna la percentuale di svolgimento di una attività. Se la percentuale assegnata è <0 o >100 il valore
 	 * di percentuale di svolgimento non viene modificato. Se la percentuale è =100 vine aggiornata anche la data
-	 * di completamento dell'attività impostando la data del giorno in cui avviene l'aggiornamento.
+	 * di completamento dell'attività assegnando automaticamente a tale data la data del giorno in cui avviene l'aggiornamento.
 	 * @param descrizione	identifica l'attività da aggiornare
-	 * @param percentualeSvolgimento valore a cui deve essere impostata la percentuale di aggiornamento 
-	 * @param dataAggiornamento data in cui viene realizzato l'aggiornamento. Se la percentuale di aggiornamento è pari a 100
-	 * questa data viene impostata come Data di completamento dell'attivitò
-	 * @throws AttivitaNonPresente	viene sollevata quando l'attività identificata da "descrizione" non è prsente nell'array
-	 * di attività che compongono il progetto
+	 * @param percentualeSvolgimento valore a cui deve essere impostata la percentuale di aggiornamento.
+	 * @throws AttivitaNonPresente	Eccezione sollevata nel caso in cui la descrizione della attività da aggiornare non corrisponda
+	 * a quella di alcuna attività presente nel progetto.
 	 */
 	public void aggiornaAttivita(String descrizione, int percentualeSvolgimento) throws AttivitaNonPresente
 	{
@@ -125,6 +162,11 @@ public class Progetto implements Serializable, ToDoInterfaccia
 		throw new AttivitaNonPresente(); //attivita non trovata
 	}
 	
+	/**
+	 * Mostra un elenco con tutti dati di tutte le attività del progetto.
+	 * @return Tutte le attività del progetto. Per ogni attività presente vengono mostrate: la descrizione, la data di scadenza,
+	 * la percentuale di svolgimento e la eventuale data di completamento.
+	 */
 	public  Attivita[] elencaAttivita()
 	{
 		
@@ -149,7 +191,11 @@ public class Progetto implements Serializable, ToDoInterfaccia
 		return elenco;
 	}
 	
-	
+	/**
+	 * Mostra un elenco con tutti dati di tutte le attività completate del progetto.
+	 * @return Tutte le attività del progetto. Per ogni attività presente vengono mostrate: la descrizione, la data di scadenza,
+	 * la percentuale di svolgimento, la data di completamento.
+	 */
 	public  Attivita[] elencaAttivitaCompletate()
 	{
 		
@@ -183,10 +229,13 @@ public class Progetto implements Serializable, ToDoInterfaccia
 	
 	
 	/**
-	 * restituisce tutte le attività non ancora completate e in scadenza
-	 * prima di una determinata data
-	 * @param data
-	 * @return
+	 * Mostra un elenco con tutti dati di tutte le attività del progetto ancora non completate
+	 * in scadenza entro una determinata data.
+	 * @param data La data limite di visualizzazione, verranno mostrate tutte le attività non ancora completate la cui data di scadenza
+	 * è precedente rispetto a questa data limite.
+	 * @return Tutte le attività del progetto non completate in scadenza entro la data passata come parametro. 
+	 * Per ogni attività presente vengono mostrate: la descrizione, la data di scadenza,
+	 * la percentuale di svolgimento..
 	 */
 	public  Attivita[] elencaAttivitaInScadenza(Date data)
 	{
@@ -216,7 +265,16 @@ public class Progetto implements Serializable, ToDoInterfaccia
 		return elencoAttivitaInScadenza;
 	}
 	
-	
+	/**	 
+	 * Esporta su un file di testo un elenco in formato CSV con tutti dati di tutte le attività del progetto.
+	 * Per ogni attività presente vengono memorizzate : la descrizione, la data di scadenza,
+	 * la percentuale di svolgimento e la eventuale data di completamento. Nel caso l'attività non sia completata
+	 * viene memorizzata la stringa "no" anzichè la data di completamento.
+	 * @param nomeFile Nome del file in cui salvare le attività. Il nome deve essere comprensivo del path e 
+	 * dell'estensione del file di testo.
+	 * @throws IOException Eccezione che vien sollevata nel caso non sia possibile accedere al file di testo
+	 * @throws FileException Eccezione che si verifica nel caso in cui il file da scrivere sia aperto in lettura.
+	 */
 	public void esportaAttivitaSuFile(String nomeFile) throws IOException, FileException
 	{
 		Attivita[] elenco;
@@ -237,6 +295,15 @@ public class Progetto implements Serializable, ToDoInterfaccia
 		fileAttivita.close();
 	}
 	
+	/**
+	 * Esporta su un file di testo un elenco in formato CSV con tutti dati di tutte le attività completate del progetto.
+	 * Per ogni attività completata vengono memorizzate : la descrizione, la data di scadenza,
+	 * la percentuale di svolgimento e la data di completamento.
+	 * @param nomeFile Nome del file in cui salvare l'elenco delle attività completate. Il nome deve essere comprensivo del path e 
+	 * dell'estensione del file di testo.
+	 * @throws IOException Eccezione che vien sollevata nel caso non sia possibile accedere al file di testo
+	 * @throws FileException Eccezione che si verifica nel caso in cui il file da scrivere sia aperto in lettura.
+	 */
 	public void esportaAttivitaCompletateSuFile(String nomeFile) throws IOException, FileException
 	{
 		Attivita[] elencoAttivitaCompletate;
@@ -253,6 +320,18 @@ public class Progetto implements Serializable, ToDoInterfaccia
 		}
 		fileAttivita.close();
 	}
+	/**
+	 * Esporta su un file di testo un elenco in formato CSV con tutti dati di tutte le attività del progetto 
+	 * non completate e la cui scadenza è precedente ad una determinata data fornita come parametro.
+	 * Per ogni attività completata vengono memorizzate : la descrizione, la data di scadenza,
+	 * la percentuale di svolgimento.
+	 * @param data La data limite di visualizzazione, verranno memorizzate sul file tutte le attività non ancora completate la cui data di scadenza
+	 * è precedente rispetto a questa data limite.
+	 * @param nomeFile Nome del file in cui salvare l'elenco delle attività completate. Il nome deve essere comprensivo del path e 
+	 * dell'estensione del file di testo.
+	 * @throws IOException Eccezione che vien sollevata nel caso non sia possibile accedere al file di testo
+	 * @throws FileException Eccezione che si verifica nel caso in cui il file da scrivere sia aperto in lettura.
+	 */
 	
 	public void esportaAttivitaInScadenzaSuFile(Date dataScadenza, String nomeFile) throws IOException, FileException
 	{

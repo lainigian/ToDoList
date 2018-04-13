@@ -1,11 +1,25 @@
 import java.util.Scanner;
-
+/**
+ * Rappresenta un menu. Consente di Creare un menu con delle voci numeriche e di effettuare i controlli sulla
+ * correttezza del dato inserito da parte dell'utente. Consente all'utente di inserire solamente valori numerici compresi fra 
+ * 0 e (numero di voci del menu)-1. In caso di inserimento non corrretto o non conforme al formato richiesto
+ * l'utente viene invitato ad eseguire nuovamente la scelta.
+ * Gli attributi sono: un elenco di stringhe che rappresentano le varie voci del menu, un intero che rappresenta il numero di voci 
+ * di cui è composto il menu.
+ * 
+ * @author Laini Gian Marco
+ *
+ */
 public class Menu2 
 {
 
 	private String[] elencoVoci;
 	int numeroVoci=0;
 
+	/**
+	 * Costruttore
+	 * @param elencoVoci Array di stringhe dve ogni elemento rappresenta una voce del menu da costruire
+	 */
 	public Menu2(String[] elencoVoci)
 	{
 		numeroVoci=elencoVoci.length;
@@ -15,13 +29,21 @@ public class Menu2
 			this.elencoVoci[i]=elencoVoci[i];
 	}
 	
+	/**
+	 * Visualizza sul monitor tutte le voci del menu
+	 */
 	private void visualizzaMenu()
 	{
 		for (int i = 0; i < elencoVoci.length; i++) 
 			System.out.println(elencoVoci[i]);
 	}
 	
-	
+	/**
+	 * Consente all'utente di scegliere fra una delle voci numeriche del menu. In caso di scelta non corretta 
+	 * o formato del dato inserito non conforme (ad esempio inserimento di una stringa anzichè di un numero)
+	 * L'utente viene invitato ad effettuare nuovament la propria scelta.
+	 * @return Il numero intero corrispondente alla voce del menu scelta dall'utente.
+	 */
 	public int sceltaMenu()
 	{
 		Scanner tastiera=new Scanner(System.in);

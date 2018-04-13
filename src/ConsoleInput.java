@@ -1,5 +1,9 @@
 import java.io.*;
-
+/**
+ * Classe di utililità per le operazioni di input dalla tastiera
+ * @author Laini Gian Marco
+ *
+ */
 public class ConsoleInput 
 
 {
@@ -16,10 +20,10 @@ public class ConsoleInput
 	}
 	
 	/**
-	 * @return
+	 * Lettura di un numero intero
+	 * @return il numero inviato dalla tastiera
 	 * @throws NumberFormatException inserimento dato non conforme
 	 * @throws IOException mancata lettura
-	 * @return valore intero letto
 	 */
 	public int readInt() throws NumberFormatException, IOException
 	{
@@ -27,10 +31,10 @@ public class ConsoleInput
 	}
 	
 	/**
-	 * @return
+	 * Lettura di un numero double
+	 * @return il numero inviato dalla tastiera
 	 * @throws NumberFormatException inserimento dato non conforme
 	 * @throws IOException mancata lettura
-	 * @return valore double letto
 	 */
 	
 	public double readDouble() throws NumberFormatException, IOException
@@ -39,10 +43,10 @@ public class ConsoleInput
 	}
 	
 	/**
-	 * @return
+	 * Lettura di un numero long
+	 * @return il numero inviato dalla tastiera
 	 * @throws NumberFormatException inserimento dato non conforme
 	 * @throws IOException mancata lettura
-	 * @return valore long letto
 	 */
 	public long readLong() throws NumberFormatException, IOException
 	{
@@ -50,10 +54,10 @@ public class ConsoleInput
 	}
 
 	/**
-	 * @return
+	 * Lettura di un valore double
+	 * @return il valore (true o false) inviato dalla tastiera
 	 * @throws NumberFormatException inserimento dato non conforme
 	 * @throws IOException mancata lettura
-	 * @return valore boolean letto
 	 */
 	public boolean readBoolean() throws IOException,NumberFormatException
 	{
@@ -61,10 +65,10 @@ public class ConsoleInput
 	}
 	
 	/**
-	 * @return
-	 * @throws NumberFormatException inserimento dato non conforme
+	 * Lettura di una stringa
+	 * @return la stringa inviata dalla tastiera
+	 * @throws NumberFormatException Eccezione che si verifica quando viene inserita una stringa nulla
 	 * @throws IOException mancata lettura
-	 * @return stringa letta
 	 */
 	
 	public String readString() throws IOException, NumberFormatException
