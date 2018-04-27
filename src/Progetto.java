@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import fileTxt.*;
+import utilita.TextFile;
 
 /**
  * La classe rappresenta un progetto. ogni progetto è composto da un certo numero di atttività. Il numero massimo di 
@@ -152,7 +153,7 @@ public class Progetto implements Serializable, ToDoInterfaccia
 				{
 					Date dataAggiornamento;
 					GregorianCalendar gc=new GregorianCalendar();
-					dataAggiornamento=new Date(gc.get(Calendar.DAY_OF_MONTH),gc.get(Calendar.MONTH+1),gc.get(Calendar.YEAR));
+					dataAggiornamento=new Date(gc.get(Calendar.DAY_OF_MONTH),(int)(gc.get(Calendar.MONTH))+1,gc.get(Calendar.YEAR));
 					elencoAttivita[i].setSvolgimento(percentualeSvolgimento, dataAggiornamento);
 					return;	//attivita aggiornata
 				}
@@ -347,6 +348,28 @@ public class Progetto implements Serializable, ToDoInterfaccia
 			fileAttivita.toFile(stringaAttivita);
 		}
 		fileAttivita.close();
+	}
+	
+	public boolean equals (Object o)
+	{
+		Progetto p=(Progetto)o;
+		boolean uguale;
+		uguale=(getDenominazione().compareTo(p.getDenominazione())==0);
+		
+		Attivita[] attivitaDiP=p.elencoAttivita;
+		
+		for (int i = 0; i < MAX_NUMERO_ATTIVITA; i++) 
+		{
+			if (elencoAttivita[i]!=null && attivitaDiP[i]!=null)
+				uguale= (uguale && elencoAttivita[i].equals(attivitaDiP[i]));
+			else
+				if (elencoAttivita[i]==null && attivitaDiP[i]==null)
+					uguale=uguale && true;
+				else
+					return false;
+		}
+		return uguale;
+		
 	}
 /*	public static void main(String[] args) 
 	{

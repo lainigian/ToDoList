@@ -186,5 +186,10 @@ public class Date implements Serializable
 		return (getDay()+"\\"+getMonth()+"\\"+getYear());
 	}
 	
+	public boolean equals(Object o)
+	{
+		Date d=(Date)o;
+		return (getDay()==d.getDay() && getMonth()==d.getMonth() && getYear()==d.getYear());
+	}
 	
 }

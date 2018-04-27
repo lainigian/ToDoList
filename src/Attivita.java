@@ -39,8 +39,13 @@ public class Attivita implements Serializable
 		descrizione=attivita.getDescrizione();
 		scadenza=attivita.getScadenza();
 		svolgimento=attivita.getSvolgimento();
-		completamento=attivita.getCompletamento();
+		if (attivita.getCompletamento()==null)
+			completamento=null;
+		else
+			completamento=attivita.getCompletamento();
 	}
+	
+	
 	
 /**
  * Metodo getter che restituisce la descrizione dell' attività
@@ -121,6 +126,23 @@ public class Attivita implements Serializable
 			risultato+="...";
 		return risultato;
 			
+	}
+	
+	public boolean equals (Object o)
+	{
+		Attivita a=(Attivita) o;
+		
+		Boolean senzaCompletamento=(getDescrizione().compareTo(a.getDescrizione())==0 && getScadenza().equals(a.getScadenza()) && getSvolgimento()==a.getSvolgimento());
+		if (!senzaCompletamento)
+			return false;
+		if (getCompletamento()==null && a.getCompletamento()==null && senzaCompletamento)
+			return true;
+		if ((getCompletamento()==null && a.getCompletamento()!=null) || (getCompletamento()!=null && a.getCompletamento()==null))
+			return false;
+		else if (getCompletamento().equals(a.getCompletamento()) && senzaCompletamento)
+			return true;
+		else
+			return false;
 	}
 	
 	/*public static void main(String[] args) 
